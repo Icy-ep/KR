@@ -1,4 +1,5 @@
 #include "Card.h"
+#include "State.h"
 
 class XUnit : public XGameEntity
 {
@@ -10,7 +11,11 @@ public:
 	virtual ~XUnit() = default;
 
 public:
-	virtual void Deploy();//部署单位
+	bool CheckDeploy();//检测是否已经完成部署
+
+	void Attacked(int32_t AttackPoint);//受到攻击，附死亡判定
+
+	virtual void Deploy(float FrameTime);//部署单位
 
 	virtual void Init();//从m_Card的编号和等级计算单位属性
 
@@ -21,13 +26,17 @@ private:
 
 	int32_t m_Attack;//攻击力
 
+	int32_t m_Defense;//防御力
+
 	int32_t m_Speed;//移动速度
 
 	int32_t m_ViewRange;//视距
 
 	int32_t m_AttackRange;//攻击距离
 
-	int32_t m_DeployTime;//部署时间
+	float m_DeployTime;//部署时间
+
+	float m_SkillTime;//攻击技能间隔
 
 	float m_AttackSpeed;//攻击速度，每AttackSpeed秒攻击一次
 
@@ -48,112 +57,3 @@ class XFixedUnit : public XUnit
 
 };
 
-class XState : public XGameEntity
-{
-public:
-	XState() = default;
-
-	virtual ~XState() = default;
-
-	virtual void EnterState(XUnit* nUnit) = 0;
-
-	virtual void ExecuteState(XUnit* nUnit) = 0;
-
-	virtual void ExitState(XUnit* nUnit) = 0;
-};
-
-class XStateDeploy : public XState
-{
-public:
-	XStateDeploy() = default;
-
-	virtual ~XStateDeploy() = default;
-
-	virtual void EnterState(XUnit* nUnit);
-
-	virtual void ExecuteState(XUnit* nUnit);
-
-	virtual void ExitState(XUnit* nUnit);
-
-
-};
-
-class XStateMoving : public XState
-{
-public:
-	XStateMoving() = default;
-
-	virtual ~XStateMoving() = default;
-
-	virtual void EnterState(XUnit* nUnit);
-
-	virtual void ExecuteState(XUnit* nUnit);
-
-	virtual void ExitState(XUnit* nUnit);
-
-
-};
-
-class XStateAttacking : public XState
-{
-public:
-	XStateAttacking() = default;
-
-	virtual ~XStateAttacking() = default;
-
-	virtual void EnterState(XUnit* nUnit);
-
-	virtual void ExecuteState(XUnit* nUnit);
-
-	virtual void ExitState(XUnit* nUnit);
-
-
-};
-
-class XStateDead : public XState
-{
-public:
-	XStateDead() = default;
-
-	virtual ~XStateDead() = default;
-
-	virtual void EnterState(XUnit* nUnit);
-
-	virtual void ExecuteState(XUnit* nUnit);
-
-	virtual void ExitState(XUnit* nUnit);
-
-
-};
-
-class XStateIdle : public XState
-{
-public:
-	XStateIdle() = default;
-
-	virtual ~XStateIdle() = default;
-
-	virtual void EnterState(XUnit* nUnit);
-
-	virtual void ExecuteState(XUnit* nUnit);
-
-	virtual void ExitState(XUnit* nUnit);
-
-
-};
-
-class XStateDestroyed : public XState
-{
-public:
-	XStateDestroyed() = default;
-
-	virtual ~XStateDestroyed() = default;
-
-	virtual void EnterState(XUnit* nUnit);
-
-	virtual void ExecuteState(XUnit* nUnit);
-
-	virtual void ExitState(XUnit* nUnit);
-
-
-};

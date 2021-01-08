@@ -4,7 +4,7 @@
 
 #include "Deck.h"
 
-XDeck::XDeck(XCard Cards[DECK_SIZE])
+XDeck::XDeck(XCard* Cards[DECK_SIZE])
 {
 	for (size_t i = 0; i < DECK_SIZE; ++i)
 	{
@@ -24,4 +24,29 @@ void XDeck::Shuffle()
 		m_Cards[i] = m_Cards[j];
 		m_Cards[j] = Temp;
 	}
+}
+void XDeck::Init()
+{
+	Shuffle();
+	m_CurrentCardPosition = 0;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		m_CardSlot[i] = m_Cards[m_CurrentCardPosition++];
+	}
+
+	m_CardNext = m_Cards[m_CurrentCardPosition++];
+
+}
+
+void XDeck::Draw(int32_t Slot)
+{
+	m_CardSlot[Slot] = m_CardNext;
+
+	if (m_CurrentCardPosition >= DECK_SIZE)
+	{
+		m_CurrentCardPosition = m_CurrentCardPosition - DECK_SIZE;
+	}
+
+	m_CardNext = m_Cards[m_CurrentCardPosition++];
 }
